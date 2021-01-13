@@ -11,9 +11,10 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.72"
     id("pl.allegro.tech.build.axion-release") version "1.12.1"
 
-    // Apply the java-library plugin for API and implementation separation.
     `java-library`
+    `maven-publish`
 }
+group = "io.github.chase22.telegram"
 
 version = scmVersion.version
 
@@ -31,4 +32,24 @@ dependencies {
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "$group"
+            artifactId = rootProject.name
+            version = scmVersion.version
+            from(components["java"])
+        }
+    }
+    repositories {
+        maven {
+            url = uri("https://chase-186482393463.d.codeartifact.eu-central-1.amazonaws.com/maven/chase-repository/")
+            credentials {
+                username = "aws"
+                password = System.getenv("CODEARTIFACT_AUTH_TOKEN")
+            }
+        }
+    }
 }
