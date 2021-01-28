@@ -33,16 +33,6 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
 
-val sourcesJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("sources")
-    from(sourceSets.main.get().allSource)
-}
-
-artifacts {
-    archives(sourcesJar)
-    archives(tasks.jar)
-}
-
 publishing {
     publications {
         create<MavenPublication>("maven") {
@@ -50,6 +40,7 @@ publishing {
             artifactId = rootProject.name
             version = scmVersion.version
             from(components["java"])
+            artifact(tasks.kotlinSourcesJar)
         }
     }
     repositories {
