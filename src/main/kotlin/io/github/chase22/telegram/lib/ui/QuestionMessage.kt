@@ -10,10 +10,10 @@ import org.telegram.telegrambots.meta.bots.AbsSender
 
 class QuestionMessage(
     private val sendMessage: SendMessage,
-    answers: List<QuestionMessageAnswers>,
+    answers: List<QuestionMessageAnswer>,
     private val layout: QuestionMessageLayout = QuestionMessageLayout.HORIZONTAL
 ) : CallbackMessage {
-    private val answerMap: Map<String, QuestionMessageAnswers> = answers.map { it.key to it }.toMap()
+    private val answerMap: Map<String, QuestionMessageAnswer> = answers.map { it.key to it }.toMap()
 
     override fun processCallback(
         absSender: AbsSender,
@@ -44,7 +44,7 @@ class QuestionMessage(
     }
 }
 
-data class QuestionMessageAnswers(
+data class QuestionMessageAnswer(
     val answer: String,
     val callback: (absSender: AbsSender, callbackQuery: CallbackQuery) -> Unit,
     val key: String = answer.replace(' ', '-').toLowerCase()
