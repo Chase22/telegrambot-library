@@ -37,7 +37,7 @@ jobs:
           aws-region: eu-central-1
       - name: Get CodeArtifact token
         id: codeArtifactToken
-        run: CODEARTIFACT_AUTH_TOKEN="aws codeartifact get-authorization-token --domain chase --domain-owner 186482393463 --query authorizationToken --output text" >> $GITHUB_ENV
+        run: CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain chase --domain-owner 186482393463 --query authorizationToken --output text) >> $GITHUB_ENV
       - name: Run tests
         run: ./gradlew test
       - name: Push Coverage to CodeCov
