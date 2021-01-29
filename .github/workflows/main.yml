@@ -29,7 +29,17 @@ jobs:
         uses: actions/setup-java@v1.4.3
         with:
           java-version: 11
+      - name: Configure Aws
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+      - name: Get CodeArtifact token
+        run: export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain chase --domain-owner 186482393463 --query authorizationToken --output text`
       - name: Run tests
         run: ./gradlew test
       - name: Push Coverage to CodeCov
         uses: codecov/codecov-action@v1.2.1
+      - name: Publish snapshot
+        run: ./gradlew publish
