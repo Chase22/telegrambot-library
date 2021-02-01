@@ -1,6 +1,7 @@
 package io.github.chase22.telegram.lib.ui
 
 import io.github.chase22.telegram.lib.GroupAdminService
+import io.github.chase22.telegram.lib.callback.CallbackMessage
 import io.github.chase22.telegram.lib.util.keyboardRow
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery

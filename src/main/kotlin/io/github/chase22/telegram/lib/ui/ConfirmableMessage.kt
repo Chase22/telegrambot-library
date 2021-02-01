@@ -1,6 +1,7 @@
 package io.github.chase22.telegram.lib.ui
 
 import io.github.chase22.telegram.lib.GroupAdminService
+import io.github.chase22.telegram.lib.callback.CallbackMessage
 import io.github.chase22.telegram.lib.ui.ConfirmableMessage.ConfirmableMessagePermission.*
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage

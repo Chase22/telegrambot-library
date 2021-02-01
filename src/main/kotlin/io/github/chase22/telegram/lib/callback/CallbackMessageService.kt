@@ -1,21 +1,12 @@
 package io.github.chase22.telegram.lib.ui
 
 import io.github.chase22.telegram.lib.GroupAdminService
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage
+import io.github.chase22.telegram.lib.callback.CallbackMessage
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
 import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.bots.AbsSender
 import javax.inject.Inject
 import javax.inject.Singleton
-
-interface CallbackMessage {
-    /**
-     * @return If the message should stay active after this update
-     */
-    fun processCallback(absSender: AbsSender, callbackQuery: CallbackQuery, adminService: GroupAdminService): Boolean
-
-    fun getSendMessage(): SendMessage
-}
 
 @Singleton
 class CallbackMessageService @Inject constructor(
@@ -42,3 +33,4 @@ class CallbackMessageService @Inject constructor(
 
     private fun getKeyFromMessage(message: Message): Pair<Long, Int> = Pair(message.chatId, message.messageId)
 }
+
