@@ -39,9 +39,6 @@ jobs:
         run: ./gradlew test
       - name: Push Coverage to CodeCov
         uses: codecov/codecov-action@v1.2.1
-      - name: Get CodeArtifact token
-        id: codeArtifactToken
-        run: echo "CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain chase --domain-owner 186482393463 --query authorizationToken --output text)" >> $GITHUB_ENV
       - name: Publish snapshot
         run: ./gradlew publish
         env:

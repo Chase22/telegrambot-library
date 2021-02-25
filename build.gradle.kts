@@ -65,7 +65,7 @@ publishing {
             url = uri("https://chase-186482393463.d.codeartifact.eu-central-1.amazonaws.com/maven/chase-repository/")
             credentials {
                 username = "aws"
-                password = System.getenv("CODEARTIFACT_AUTH_TOKEN")
+                password = getAuthToken()
             }
         }
     }
@@ -94,4 +94,17 @@ tasks.jacocoTestReport {
         csv.isEnabled = false
         html.destination = file("$buildDir/jacocoHtml")
     }
+}
+
+fun getAuthToken(): String {
+    val awsAuthTokenProcess = ProcessBuilder().command(
+        "aws", "codeartifact", "get-authorization-token",
+        "--domain", "chase",
+        "--domain-owner", "186482393463",
+        "--query", "authorizationToken",
+        "--duration-seconds", "900",
+        "--output", "text"
+    ).start()
+    awsAuthTokenProcess.waitFor(1, TimeUnit.MINUTES)
+    return awsAuthTokenProcess.inputStream.bufferedReader().readText()
 }
