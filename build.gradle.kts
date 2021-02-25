@@ -24,6 +24,8 @@ version = scmVersion.version
 
 val kotlinVersion = project.properties["kotlinVersion"]
 
+println("token ${System.getenv("CODEARTIFACT_AUTH_TOKEN")}")
+
 java {
     sourceCompatibility = VERSION_11
     targetCompatibility = VERSION_11

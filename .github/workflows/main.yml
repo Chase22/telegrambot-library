@@ -38,8 +38,6 @@ jobs:
       - name: Get CodeArtifact token
         id: codeArtifactToken
         run: echo "CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain chase --domain-owner 186482393463 --query authorizationToken --output text)" >> $GITHUB_ENV
-      - name: Token Test
-        run: echo $CODEARTIFACT_AUTH_TOKEN
       - name: Run tests
         run: ./gradlew test
       - name: Push Coverage to CodeCov
