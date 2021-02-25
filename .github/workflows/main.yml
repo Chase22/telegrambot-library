@@ -35,13 +35,13 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-central-1
-      - name: Get CodeArtifact token
-        id: codeArtifactToken
-        run: echo "CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain chase --domain-owner 186482393463 --query authorizationToken --output text)" >> $GITHUB_ENV
       - name: Run tests
         run: ./gradlew test
       - name: Push Coverage to CodeCov
         uses: codecov/codecov-action@v1.2.1
+      - name: Get CodeArtifact token
+        id: codeArtifactToken
+        run: echo "CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain chase --domain-owner 186482393463 --query authorizationToken --output text)" >> $GITHUB_ENV
       - name: Publish snapshot
         run: ./gradlew publish
         env:
