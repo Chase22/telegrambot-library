@@ -23,8 +23,7 @@ group = "io.github.chase22.telegram"
 version = scmVersion.version
 
 val kotlinVersion = project.properties["kotlinVersion"]
-
-println("token ${System.getenv("CODEARTIFACT_AUTH_TOKEN")}")
+System.getenv().forEach(::println)
 
 java {
     sourceCompatibility = VERSION_11
