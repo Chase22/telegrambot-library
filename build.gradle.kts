@@ -23,7 +23,6 @@ group = "io.github.chase22.telegram"
 version = scmVersion.version
 
 val kotlinVersion = project.properties["kotlinVersion"]
-System.getenv().forEach(::println)
 
 java {
     sourceCompatibility = VERSION_11
