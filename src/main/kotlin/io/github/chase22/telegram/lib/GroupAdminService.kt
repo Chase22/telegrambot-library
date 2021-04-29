@@ -7,15 +7,20 @@ import javax.inject.Singleton
 
 @Singleton
 class GroupAdminService @Inject constructor(
-        private val absSender: AbsSender
+    private val absSender: AbsSender
 ) {
     fun isAdmin(chatId: Long, userId: Int): Boolean {
-        val status = absSender.execute(GetChatMember.builder()
-                .userId(userId)
-                .chatId(chatId.toString())
-                .build()
-        ).status
-
-        return status.toLowerCase() == "creator" || status.toLowerCase() == "administrator"
+        val status = getAdminStatus(chatId, userId)
+        return status == "creator" || status == "administrator"
     }
+
+    fun isCreator(chatId: Long, userId: Int): Boolean {
+        val status = getAdminStatus(chatId, userId)
+        return status == "creator"
+    }
+
+    fun getAdminStatus(chatId: Long, userId: Int): String =
+        absSender.execute(GetChatMember(chatId.toString(), userId))
+            .status
+            .toLowerCase()
 }

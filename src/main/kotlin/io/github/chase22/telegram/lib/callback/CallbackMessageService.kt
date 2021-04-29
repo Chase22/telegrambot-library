@@ -1,10 +1,6 @@
-package io.github.chase22.telegram.lib.ui
+package io.github.chase22.telegram.lib.callback
 
-import io.github.chase22.telegram.lib.GroupAdminService
-import io.github.chase22.telegram.lib.callback.CallbackMessage
-import io.github.chase22.telegram.lib.callback.CallbackServiceStorage
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
-import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.bots.AbsSender
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,23 +8,33 @@ import javax.inject.Singleton
 @Singleton
 class CallbackMessageService @Inject constructor(
     private val absSender: AbsSender,
-    private val adminService: GroupAdminService,
-    private val storage: CallbackServiceStorage
+    private val storage: CallbackServiceStorage,
+    initialMessageHandlers: List<CallbackMessageHandler>
 ) {
+    private val messageHandlers: Map<String, CallbackMessageHandler> =
+        initialMessageHandlers.associateBy { it.identifier }
+
     fun processCallback(callbackQuery: CallbackQuery) {
         val message = callbackQuery.message
 
         storage.get(message.chatId, message.messageId)?.let {
-            if (!it.processCallback(absSender, callbackQuery, adminService)) {
-                storage.remove(message.chatId, message.messageId)
+            messageHandlers[it.handlerId]?.let { handler ->
+                if (!handler.processUpdate(callbackQuery)) {
+                    storage.remove(message.chatId, message.messageId)
+                }
             }
         }
     }
 
     fun sendCallbackMessage(callbackMessage: CallbackMessage) {
-        val message = absSender.execute(callbackMessage.getSendMessage())
+        val message = absSender.execute(callbackMessage.message)
 
-        storage.save(message.chatId, message.messageId, callbackMessage)
+        storage.save(
+            message.chatId,
+            message.messageId,
+            callbackMessage.handlerId,
+            callbackMessage.attributes ?: emptyMap()
+        )
     }
 }
 
